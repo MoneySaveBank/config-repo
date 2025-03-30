@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: login-service
+          uri: lb://login-service/
+          predicates:
+            - Path=/api/login/authenticate/**
+
+        - id: accounts-service
+          uri: lb://accounts-service/
+          predicates:
+            - Path=/*/accounts/**
+server:
+  port: 9000
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+
+logging:
+  level:
+    '[org.springframework.cloud.gateway]': debug
+    '[org.springframework.web.reactive.function.client]': trace
